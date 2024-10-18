@@ -1,0 +1,29 @@
+.gameShop{
+
+}
+.gameShop-game{
+  width: 250px;
+  height: 300px;
+  background-color: rgb(143, 143, 143);
+  display: grid;
+  grid-template-rows:auto min-content;
+}
+.game-description{
+ display: grid;
+ grid-template-rows: min-content auto min-content;
+}
+.description-title{
+  text-align: center;
+}
+.description-img{
+  text-align: center;
+}
+.description-text{
+  
+}
+.game-buttonPlay{
+  text-align: center;
+  padding:0px 20px 0px;
+  background-color: rgb(235, 235, 235);
+  border:1px solid rgb(16, 16, 16);
+}

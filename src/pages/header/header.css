@@ -1,0 +1,21 @@
+.header{
+  display: grid;
+  grid-template-columns: min-content auto min-content;
+  align-items: center;
+  justify-items: center;
+ /* box-shadow: 0px 0px 20px 0px #d6caca;*/
+}
+.header-search{
+  border:1px solid rgb(16, 16, 16);
+}
+.search-input{
+  height: 40px;
+  text-align: center;
+  border: none;
+}
+.search-button{
+  padding: 10px;
+  height: 40px;
+  text-align: center;
+  border: none;
+}

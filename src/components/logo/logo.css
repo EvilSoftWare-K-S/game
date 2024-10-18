@@ -1,0 +1,32 @@
+.logo{
+  width: 100px;
+  height: 80px;
+  display: grid;
+  grid-template-areas: "top-left top-right"
+                        "bottom-left bottom-right";
+}
+.logo-cube{
+  width: 50px;
+  height: 40px;
+}
+.top-left,.top-right,.bottom-left,.bottom-right{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.top-left{
+  grid-area: top-left;
+  background-color:  rgb(247, 146, 146); 
+}
+.top-right{
+  grid-area: top-right;
+  background-color:  rgb(146, 170, 247);
+}
+.bottom-left{
+  grid-area: bottom-left;
+  background-color:  rgb(146, 247, 180);
+}
+.bottom-right{
+  grid-area:  bottom-right;
+  background-color:  rgb(224, 146, 247);
+}

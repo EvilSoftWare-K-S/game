@@ -1,0 +1,19 @@
+.footer{
+  display: grid;
+  grid-template-columns: min-content auto min-content;
+  align-items: center;
+  justify-items: center;
+}
+.footer-aboutUs{
+  display: grid;
+  grid-template-areas: "left right";
+  gap: 10px 20px;
+}
+.footer-social{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+}
+.footer-socialImg{
+  width: 40px;
+}

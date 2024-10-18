@@ -1,23 +1,27 @@
-import logo from './logo.svg';
+import React from 'react';
+import {Routes, Route } from "react-router-dom";
+import { useState } from 'react';
+
+import Header from './pages/header/header';
+import Footer from './pages/footer/footer';
+import GameShop from './pages/gameShop/gameShop'
+import ErrorPage from './pages/errorPage/errorPage'
+import GameSnake from './pages/gameSnake/gameSnakeNe'
+
 import './App.css';
+
+import logo from './logo.svg';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header/>
+      <Routes>
+          <Route path='/' element={<GameShop/>}/>
+          <Route path='/GameSnake' element={<GameSnake/>}/>
+          <Route path='*' element={<ErrorPage/>} />
+      </Routes>
+      <Footer/>
     </div>
   );
 }

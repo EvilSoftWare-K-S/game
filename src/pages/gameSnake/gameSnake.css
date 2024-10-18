@@ -1,0 +1,29 @@
+.gameSnake{
+  border:1px solid rgb(16, 16, 16);
+  background-color: aquamarine;
+}
+.fieldHorizontal{
+  display: flex;
+}
+.cell,.cellfood,.cellsnake,.cellsnakefood{
+  width: 30px;
+  height: 30px;
+}
+.cell{
+  background-color: rgb(189, 189, 189);
+}
+.cellfood{
+  background-color: rgb(255, 116, 116);
+}
+.cellsnake{
+  background-color: rgb(153, 255, 144);
+}
+.cellsnakefood{
+  background-color: rgb(153, 255, 144);
+}
+.cellbodySnake{
+  background-color: rgb(153, 255, 144);
+}
+.cellheadSnake{
+  background-color: rgb(68, 143, 62);
+}
