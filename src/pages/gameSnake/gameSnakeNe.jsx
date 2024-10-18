@@ -89,15 +89,19 @@ const GameSnake = () => {
       switch(direction) {
         case 'up':
           head.y = limitByField(head.y - 1,COLS);
+          console.log(direction);
           break;
         case 'down':
           head.y = limitByField(head.y + 1,COLS);
+          console.log(direction);
           break;
         case 'left':
           head.x = limitByField(head.x - 1,ROWS);
+          console.log(direction);
           break;
         case 'right':
           head.x = limitByField(head.x + 1,ROWS);
+          console.log(direction);
           break;
         default:
           break;
@@ -115,20 +119,49 @@ const GameSnake = () => {
     
   }
 
+  function checkDirection(strDirection){
+    switch(strDirection) {
+      case 'updown':
+        return false;
+      case 'downup':
+        return false;
+      case 'rightleft':
+        return false;
+      case 'leftright':
+        return false;
+      default:
+        return true;
+    }
+  }
+
+  function checkCorrectDirection(newDir,oldDir){
+    //return checkDirection(newDir + "" + oldDir) ? newDir : oldDir;
+    console.log("old", oldDir);
+    console.log("isResult",checkDirection(newDir + "" + oldDir));
+    console.log("result",checkDirection(newDir + "" + oldDir) ? newDir : oldDir);
+    return newDir;
+    // if(checkDirection(newDir + "" + oldDir)){
+    //   return newDir;
+    // }
+    // else{
+    //   return oldDir;
+    // }
+  }
+  
   React.useEffect(() => {
     const handleKeyDown = (e) => {
       switch(e.keyCode) {
         case 37:
-          setDirection(DIRECTION.left);
+          setDirection(checkCorrectDirection(DIRECTION.left, direction));
           break;
         case 38:
-          setDirection(DIRECTION.top);
+          setDirection(checkCorrectDirection(DIRECTION.top, direction));
           break;
         case 39:
-          setDirection(DIRECTION.right);
+          setDirection(checkCorrectDirection(DIRECTION.right, direction));
           break;
         case 40:
-          setDirection(DIRECTION.bottom);
+          setDirection(checkCorrectDirection(DIRECTION.bottom, direction));
           break;
         default:
           break;
@@ -147,7 +180,7 @@ const GameSnake = () => {
         return () => clearInterval(timer);
       }
       moveSnake();
-    }, 100);
+    }, 150);
 
     return () => clearInterval(timer);
   }, [snake]);
