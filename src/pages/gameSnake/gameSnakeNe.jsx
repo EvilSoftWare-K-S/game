@@ -15,8 +15,9 @@ const DIRECTION = {
 
 const GameSnake = () => {
   
+  // const [snakeAllSegment, setsnakeAllSegment] = useState(
+  //   {head:[{ x: 0, y: 0 }],body:[{ x: 0, y: 0 }]} );
   
-
   const [snake, setSnake] = useState([{ x: 0, y: 0 }]);
   const [food, setFood] = useState({ x: 3, y: 3 });
   const [direction, setDirection] = useState('right');
@@ -89,19 +90,19 @@ const GameSnake = () => {
       switch(direction) {
         case 'up':
           head.y = limitByField(head.y - 1,COLS);
-          console.log(direction);
+          // console.log(direction);
           break;
         case 'down':
           head.y = limitByField(head.y + 1,COLS);
-          console.log(direction);
+          // console.log(direction);
           break;
         case 'left':
           head.x = limitByField(head.x - 1,ROWS);
-          console.log(direction);
+          // console.log(direction);
           break;
         case 'right':
           head.x = limitByField(head.x + 1,ROWS);
-          console.log(direction);
+          // console.log(direction);
           break;
         default:
           break;
@@ -112,9 +113,15 @@ const GameSnake = () => {
       setSnake([head, ...snake.slice(0, -1)]);
     }
     else{
+      if(snake[0].x===food.x && snake[0].y===food.y){
+        setFood(nonOverlappCoords());
+        setSnake([head, ...snake]);
+      }
+      else{
+        console.log("ccacatafasf");
+        handleSetPlay();
+      }
       
-      setFood(nonOverlappCoords());
-      setSnake([head, ...snake]);
     }
     
   }
@@ -133,19 +140,20 @@ const GameSnake = () => {
         return true;
     }
   }
+  
+  //исправить ошибку в результате которой змея может развернуться в себя 
+/*
+  % функция checkCorrectDirection условно рабочая
+  % можно использовать для усложнения игры в результате полного отключения функции
+  % чем выше (скорость игры), тем сложнее баг воспроизвести
 
+  !!как воспроизвести баг!!
+  (во время отрисовки кадра (скорость игры) меняем направление змеи на перпендикулярное текущему
+   и сразу меняем на противоположное текущему движению )
+   
+*/
   function checkCorrectDirection(newDir,oldDir){
-    //return checkDirection(newDir + "" + oldDir) ? newDir : oldDir;
-    console.log("old", oldDir);
-    console.log("isResult",checkDirection(newDir + "" + oldDir));
-    console.log("result",checkDirection(newDir + "" + oldDir) ? newDir : oldDir);
-    return newDir;
-    // if(checkDirection(newDir + "" + oldDir)){
-    //   return newDir;
-    // }
-    // else{
-    //   return oldDir;
-    // }
+    return checkDirection(newDir + "" + oldDir) ? newDir : oldDir;
   }
   
   React.useEffect(() => {
@@ -171,7 +179,7 @@ const GameSnake = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [direction]);
 
   useEffect(() => {
     const timer = setInterval(() => {
