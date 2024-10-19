@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './gameSnake.css';
 
-
-
-
-// const ROWS = 5;
-// const COLS = 5;
 const DIRECTION = {
   right: "right",
   left: "left",
@@ -15,20 +10,27 @@ const DIRECTION = {
 
 const GameSnake = () => {
   
-  // const [snakeAllSegment, setsnakeAllSegment] = useState(
-  //   {head:[{ x: 0, y: 0 }],body:[{ x: 0, y: 0 }]} );
-  
-  const [snake, setSnake] = useState([{ x: 0, y: 0 }]);
+  const [snakeAllSegment, setsnakeAllSegment] = useState( 
+    {
+      head:[{ x: 2, y: 0 }],
+      body:[{ x: 1, y: 0 },{ x: 0, y: 0 }]} );
+
   const [food, setFood] = useState({ x: 3, y: 3 });
   const [direction, setDirection] = useState('right');
   const [isPlay, setIsPlay] = useState(false);
+  const [textEnd, setTextEnd] = useState("");
   const [ROWS , setROWS] = useState(sizeField("small"));
   const [COLS, setCOLS] = useState(sizeField("small"));
   
   const handleSetPlay = () =>{
     setIsPlay(!isPlay);
   }
-  
+  const handlesetWinText=()=>{
+    setTextEnd("ТЫ ПОБЕДИЛ!:)")
+  }
+  const handlesetLoseText=()=>{
+    setTextEnd("ТЫ ПРОИГРАЛ!!!! ;(")
+  }
   const handleSetSpeed=()=>{
     console.log();
   }
@@ -62,18 +64,20 @@ const GameSnake = () => {
     setCOLS(valueSize);
   }
 
-  const nonOverlappCoords = () => {
-      let overlap = false;
-      let newX, newY;
-      do {
-        newX = Math.floor(Math.random() * ROWS);
-        newY = Math.floor(Math.random() * COLS);
-        overlap = snake.some(snakeSegment => snakeSegment.x === newX && snakeSegment.y === newY);
-    } while (overlap);
-    
-    return { x: newX, y: newY };
+  const nonOverlappFoodCoords = () => {
+    let overlap = false;
+    let overlapHead;
+    let overlapBody;
+    let newX, newY;
+    do {
+      newX = Math.floor(Math.random() * ROWS);
+      newY = Math.floor(Math.random() * COLS);
+      overlapHead = snakeAllSegment.head.some(snakeheadSegment => snakeheadSegment.x === newX && snakeheadSegment.y === newY);
+      overlapBody = snakeAllSegment.body.some(snakebodySegment => snakebodySegment.x === newX && snakebodySegment.y === newY);
+      overlap = overlapHead || overlapBody;
+    } while (overlap || newX === food.x && newY === food.y); // check for overlap with snake and food
+   return { x: newX, y: newY };
   }
-
 
   const limitByField = (position, limitPosition) => {
     if(position >= limitPosition){
@@ -86,42 +90,40 @@ const GameSnake = () => {
   }
 
   const moveSnake = () => {
-    const head = { ...snake[0] };
+    const head = { ...snakeAllSegment.head[0] };
       switch(direction) {
         case 'up':
           head.y = limitByField(head.y - 1,COLS);
-          // console.log(direction);
           break;
         case 'down':
           head.y = limitByField(head.y + 1,COLS);
-          // console.log(direction);
           break;
         case 'left':
           head.x = limitByField(head.x - 1,ROWS);
-          // console.log(direction);
           break;
         case 'right':
           head.x = limitByField(head.x + 1,ROWS);
-          // console.log(direction);
           break;
         default:
           break;
       }
 
+    
+    if(snakeAllSegment.body.some(s => s.x === head.x && s.y === head.y)){
       
-    if(snake[0].x!==food.x || snake[0].y!==food.y){
-      setSnake([head, ...snake.slice(0, -1)]);
+      handlesetLoseText();
+      handleSetPlay();
     }
     else{
-      if(snake[0].x===food.x && snake[0].y===food.y){
-        setFood(nonOverlappCoords());
-        setSnake([head, ...snake]);
+      if(head.x!==food.x || head.y!==food.y){
+        setsnakeAllSegment({head:[head], body:[head, ...snakeAllSegment.body.slice(0, -1)]});
       }
       else{
-        console.log("ccacatafasf");
-        handleSetPlay();
+        if(head.x===food.x && head.y===food.y){
+          setFood(nonOverlappFoodCoords());
+          setsnakeAllSegment({head:[head], body:[head, ...snakeAllSegment.body]});
+        }
       }
-      
     }
     
   }
@@ -183,7 +185,8 @@ const GameSnake = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if( snake.length + 1 >= ROWS * COLS ){
+      if( snakeAllSegment.head.length + snakeAllSegment.body.length + 1 >= ROWS * COLS ){
+        handlesetWinText();
         handleSetPlay();
         return () => clearInterval(timer);
       }
@@ -191,7 +194,7 @@ const GameSnake = () => {
     }, 150);
 
     return () => clearInterval(timer);
-  }, [snake]);
+  }, [snakeAllSegment]);
 
   return (
    <div>
@@ -201,7 +204,7 @@ const GameSnake = () => {
           {Array.from({ length: ROWS }, (_, row) => (
             <div className='fieldHorizontal' key={row}>
               {Array.from({ length: COLS }, (_, col) => (
-                <div key={col} className={`cell${snake.some(s => s.x === col && s.y === row) ? 'snake' : ''}${food.x === col && food.y === row ? 'food' : ''}`}></div>
+                <div key={col} className={`cell${snakeAllSegment.head.some(s => s.x === col && s.y === row) ? 'snakeHead' : ''}${snakeAllSegment.body.some(s => s.x === col && s.y === row) ? 'body' : ''}${food.x === col && food.y === row ? 'food' : ''}`}></div>
               ))
               }
             </div>
@@ -209,6 +212,9 @@ const GameSnake = () => {
         </div>
       :
       <div className='gameSnake-settings'>
+        <div className='settings-textEnd'>
+          {textEnd}
+        </div>
         <div className='settings-fieldSize'>
             <legend>Выбери размер поля игры:</legend>
             <button onClick={handleSetFieldLarge}>большое</button>
@@ -227,16 +233,6 @@ const GameSnake = () => {
       </div>
     }
    </div>
- 
-    // <div>
-    //   {Array.from({ length: ROWS }, (_, row) => (
-    //     <div className='fieldHorizontal' key={row}>
-    //       {Array.from({ length: COLS }, (_, col) => (
-    //         <div key={col} className={`cell${snake.some(s => s.x === col && s.y === row) ? 'snake' : ''}${food.x === col && food.y === row ? 'food' : ''}`}></div>
-    //       ))}
-    //     </div>
-    //   ))}
-    // </div>
   );
 }
 

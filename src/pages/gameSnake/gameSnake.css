@@ -5,25 +5,20 @@
 .fieldHorizontal{
   display: flex;
 }
-.cell,.cellfood,.cellsnake,.cellsnakefood{
+.cell,.cellfood,.cellsnake,.cellbodyfood,.cellbody,.cellsnakeHeadbody{
   width: 30px;
   height: 30px;
 }
+ 
 .cell{
   background-color: rgb(189, 189, 189);
 }
 .cellfood{
   background-color: rgb(255, 116, 116);
 }
-.cellsnake{
-  background-color: rgb(153, 255, 144);
+.cellsnakeHeadfood,.cellsnakeHeadbodyfood,.cellbodyfood,.cellbody{
+  background-color: #19cf22;
 }
-.cellsnakefood{
-  background-color: rgb(153, 255, 144);
-}
-.cellbodySnake{
-  background-color: rgb(153, 255, 144);
-}
-.cellheadSnake{
-  background-color: rgb(68, 143, 62);
+.cellsnakeHeadbody{
+  background-color: #16c21e;
 }
